@@ -1,10 +1,19 @@
-import './App.css'
+import { useState } from 'react'
+
+import LogIn from './components/logIn'
+
 
 function App() {
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loggedIn, setLoggedIn] = useState(false);
+
+
   return (
     <>
-      Hello World
+      {!loggedIn ? <div>
+        <LogIn />
+      </div> : <div></div>}
     </>
   )
 }
