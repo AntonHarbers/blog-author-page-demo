@@ -1,6 +1,10 @@
 import { useState } from "react"
 
-export default function LogIn(setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>) {
+interface LogInProps {
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function LogIn({ setLoggedIn }: LogInProps) {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

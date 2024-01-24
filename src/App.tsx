@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-import LogIn from './components/logIn'
-
+import LogIn from './components/LogIn'
+import Posts from './components/Posts'
+import NewPostForm from './components/NewPostForm';
 
 function App() {
 
@@ -12,8 +13,10 @@ function App() {
   return (
     <>
       {!loggedIn ? <div>
-        <LogIn />
-      </div> : <div></div>}
+        <LogIn setLoggedIn={setLoggedIn} />
+      </div> : <div>
+        <Posts />
+        <NewPostForm /></div>}
     </>
   )
 }
