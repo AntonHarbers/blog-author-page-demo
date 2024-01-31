@@ -12,11 +12,14 @@ function App() {
 
   useEffect(() => {
     const JWT = localStorage.getItem('JWT');
+
+    // send session request to api
+    // if session is logged in then display log in
+    // retry this every couple of minutes
     if (JWT != '') {
       setLoggedIn(true)
     }
   }, [])
-
 
   return (
     <>

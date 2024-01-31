@@ -16,22 +16,29 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
             password: password,
         }
 
-        const response = await fetch('http://localhost:3000/log-in', {
+        console.log(JSON.stringify(options))
+
+        const response = await fetch('http://localhost:3000/auth/log-in', {
             method: 'POST',
             mode: 'cors',
             headers: {
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(options),
         })
-        const data = response.json()
+        const data = await response.json()
 
         // if it returns a token, save that token to local storage and set is logged in to true
         // on startup, if a local token exists, try to see if its still valid with the session route
         // if it is then log in
         // if it isnt then do nothing
+        console.log(data.token)
 
-        setLoggedIn(true)
-        console.log(data)
+        if (data.token) {
+            setLoggedIn(true)
+            localStorage.setItem('JWT', data.token)
+        }
+        //setLoggedIn(true)
     }
 
 
