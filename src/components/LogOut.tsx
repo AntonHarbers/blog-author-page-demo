@@ -10,6 +10,7 @@ export default function LogOut({ setLoggedIn }: LogInProps) {
         // set session state to false
         setLoggedIn(false)
     }
+
     return (
         <div>
             <button onClick={HandleLogOut}>Log Out</button>

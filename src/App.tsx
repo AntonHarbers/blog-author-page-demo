@@ -13,12 +13,32 @@ function App() {
   useEffect(() => {
     const JWT = localStorage.getItem('JWT');
 
+    const CheckSession = async () => {
+      const response = await fetch('http://localhost:3000/auth/session', {
+        method: 'GET',
+        mode: 'cors',
+        headers: { "Authorization": `Bearer ${JWT}` }
+      })
+      const data = await response.json()
+
+      if (data.message == 'You are signed in.' && data.admin == true) {
+        setLoggedIn(true)
+      }
+      console.log(data)
+    }
+
+    CheckSession().catch((e) => console.log(e));
+
+
+
+
     // send session request to api
     // if session is logged in then display log in
     // retry this every couple of minutes
-    if (JWT != '') {
-      setLoggedIn(true)
-    }
+  }, [])
+
+  useEffect(() => {
+    console.log('yes')
   }, [])
 
   return (
