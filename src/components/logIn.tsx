@@ -8,9 +8,18 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState([''])
 
     async function HandleLogIn(e: React.MouseEvent<HTMLElement>) {
         e.preventDefault();
+        if (username.length < 1) {
+            setErrors(['Username must not be empty'])
+            return;
+        } else if (password.length < 6) {
+            setErrors(['Password must be at least 6 characters long'])
+            return;
+        }
+
         const options = {
             username: username,
             password: password,
@@ -27,18 +36,12 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
             body: JSON.stringify(options),
         })
         const data = await response.json()
-
-        // if it returns a token, save that token to local storage and set is logged in to true
-        // on startup, if a local token exists, try to see if its still valid with the session route
-        // if it is then log in
-        // if it isnt then do nothing
-        console.log(data.token)
-
         if (data.token) {
             setLoggedIn(true)
             localStorage.setItem('JWT', data.token)
+        } else {
+            setErrors([data])
         }
-        //setLoggedIn(true)
     }
 
 
@@ -51,7 +54,11 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
                 <label className="text-xl text-center" htmlFor="username">Password</label>
                 <input value={password} onChange={(e) => setPassword(e.currentTarget.value)} type="password" name="password" className="p-2 border border-gray-300 text-xl text-center rounded-md " placeholder="Enter your password.." />
                 <button onClick={HandleLogIn} className=" border  p-5 hover:border-slate-400 rounded-md bg-green-100 hover:bg-green-300 active:bg-green-200" type="submit">Log In</button>
+                {errors.map((err) => {
+                    return <div key={err}>{err}</div>
+                })}
             </form>
+
         </div>
     )
 }

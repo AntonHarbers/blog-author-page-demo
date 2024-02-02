@@ -6,13 +6,12 @@ import NewPostForm from './components/NewPostForm';
 import LogOut from './components/LogOut';
 
 function App() {
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loggedIn, setLoggedIn] = useState(false);
+  const [sessionTimer, setSessionTimer] = useState(0);
+  const [isCreatingPost, setIsCreatingPost] = useState(false);
 
   useEffect(() => {
     const JWT = localStorage.getItem('JWT');
-
     const CheckSession = async () => {
       const response = await fetch('http://localhost:3000/auth/session', {
         method: 'GET',
@@ -21,34 +20,43 @@ function App() {
       })
       const data = await response.json()
 
+      if (!data.expiresIn) {
+        setLoggedIn(false)
+        return
+      }
+
       if (data.message == 'You are signed in.' && data.admin == true) {
         setLoggedIn(true)
+      } else {
+        setLoggedIn(false)
+        return;
       }
-      console.log(data)
+
+      setSessionTimer(data.expiresIn)
     }
 
     CheckSession().catch((e) => console.log(e));
-
-
-
-
-    // send session request to api
-    // if session is logged in then display log in
-    // retry this every couple of minutes
   }, [])
 
-  useEffect(() => {
-    console.log('yes')
-  }, [])
+  const ToggleNewPostForm = () => {
+    setIsCreatingPost(!isCreatingPost)
+  }
 
   return (
     <>
       {!loggedIn ? <div>
         <LogIn setLoggedIn={setLoggedIn} />
-      </div> : <div>
+      </div> : <div className='flex flex-col bg-slate-200 h-[100vh] w-full justify-center items-center'>
         <LogOut setLoggedIn={setLoggedIn} />
+        <button className='absolute top-3 left-3 bg-green-300 p-3 rounded-sm hover:bg-green-500 active:bg-green-300' onClick={ToggleNewPostForm}>Create Post</button>
         <Posts />
-        <NewPostForm /></div>}
+
+        {isCreatingPost && <NewPostForm setIsCreatingPost={setIsCreatingPost} />
+        }
+        <div className='w-full text-center absolute bottom-0'>{sessionTimer} until session expires</div>
+
+      </div>}
+
     </>
   )
 }
