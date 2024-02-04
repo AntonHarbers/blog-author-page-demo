@@ -7,22 +7,24 @@ interface Post {
     created_at: number,
     is_published: boolean,
     _id: string,
-
 }
 
+
 export default function Posts() {
-    // fetch the posts from the api and display them
-
     const [posts, setPosts] = useState<Post[]>([])
-
     useEffect(() => {
-        // get all the posts from api
         const FetchPosts = async () => {
-            const response = await fetch('http://localhost:3000/posts');
+            const JWT = localStorage.getItem('JWT');
+            const response = await fetch('http://localhost:3000/posts/admin', {
+                headers: {
+                    'Authorization': `Bearer ${JWT}`
+                }
+            });
             const data = await response.json();
             setPosts(data)
             console.log(data)
         }
+
         FetchPosts().catch((e) => console.log(e))
     }, [])
 
@@ -65,11 +67,11 @@ export default function Posts() {
         })
 
         const data = await response.json();
+        console.log(data)
 
         const newPosts = posts.filter(post => post._id !== id);
         setPosts(newPosts)
 
-        console.log(data)
     }
 
 

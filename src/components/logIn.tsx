@@ -36,11 +36,14 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
             body: JSON.stringify(options),
         })
         const data = await response.json()
-        if (data.token) {
+
+        console.log(data)
+        if (data.token && data.admin) {
             setLoggedIn(true)
             localStorage.setItem('JWT', data.token)
         } else {
-            setErrors([data])
+            if (data.token) { setErrors(['You are not an admin']) } else { setErrors([data]) }
+
         }
     }
 
