@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import LogIn from './components/LogIn'
 import Posts from './components/Posts'
-import NewPostForm from './components/NewPostForm';
 import LogOut from './components/LogOut';
 
 function App() {
@@ -49,14 +48,9 @@ function App() {
       </div> : <div className='flex flex-col bg-slate-200 h-[100vh] w-full justify-center items-center'>
         <LogOut setLoggedIn={setLoggedIn} />
         <button className='absolute top-3 left-3 bg-green-300 p-3 rounded-sm hover:bg-green-500 active:bg-green-300' onClick={ToggleNewPostForm}>Create Post</button>
-        <Posts />
-
-        {isCreatingPost && <NewPostForm setIsCreatingPost={setIsCreatingPost} />
-        }
+        <Posts isCreatingPost={isCreatingPost} setIsCreatingPost={setIsCreatingPost} />
         <div className='w-full text-center absolute bottom-0'>{sessionTimer} until session expires</div>
-
       </div>}
-
     </>
   )
 }

@@ -1,10 +1,21 @@
 import { useState } from "react";
 
-interface NewPostProps {
-    setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+interface Post {
+    title: string,
+    content: string,
+    author: string,
+    created_at: number,
+    is_published: boolean,
+    _id: string,
 }
 
-export default function NewPostForm({ setIsCreatingPost }: NewPostProps) {
+interface NewPostProps {
+    setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+    setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+    posts: Post[];
+}
+
+export default function NewPostForm({ setIsCreatingPost, setPosts, posts }: NewPostProps) {
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
@@ -41,21 +52,20 @@ export default function NewPostForm({ setIsCreatingPost }: NewPostProps) {
                 })
             })
 
-            const data = await response.json;
+            const data = await response.json();
 
-            console.log(data)
+            setPosts([...posts, data])
         }
 
         PostPost().catch(e => console.log(e))
 
         setIsCreatingPost(false)
 
-        // update current posts 
 
     }
 
     return (
-        <form className=" position absolute bg-slate-500 flex flex-col gap-2 p-5">
+        <form className=" absolute left-[30%] w-[40%] min-w-[350px] top-[25%] bg-slate-500 flex flex-col gap-2 p-5">
             <input className="p-2" type="text" name="title" placeholder="Enter post title here.." value={title} onChange={(e) => setTitle(e.currentTarget.value)} />
             <textarea value={content} onChange={(e) => setContent(e.currentTarget.value)} className="p-2" name="content" id="postContent" placeholder="Enter post content here.." cols={30} rows={10}></textarea>
             <div className="w-full flex items-center justify-center gap-5 ">

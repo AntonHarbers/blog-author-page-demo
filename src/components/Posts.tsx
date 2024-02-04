@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import NewPostForm from './NewPostForm';
 
 interface Post {
     title: string,
@@ -9,8 +10,13 @@ interface Post {
     _id: string,
 }
 
+interface NewPostProps {
+    isCreatingPost: boolean;
+    setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function Posts() {
+
+export default function Posts({ isCreatingPost, setIsCreatingPost }: NewPostProps) {
     const [posts, setPosts] = useState<Post[]>([])
     useEffect(() => {
         const FetchPosts = async () => {
@@ -79,13 +85,15 @@ export default function Posts() {
         <div>
             {posts.map((post, index) => (
                 <div key={index} className=" bg-blue-200 p-3 flex flex-col gap-2 items-center mt-2 w-[80%] ml-auto mr-auto">
-                    <div className=" font-semibold text-xl">Title: {post.title} {index}</div>
+                    <div className=" font-semibold text-xl">Title: {post.title}</div>
                     <div className=" text-lg">Post: {post.content}</div>
                     {post.is_published ? <button className=" p-2 bg-red-300 rounded-md" onClick={() => HandlePublish(false, post._id)}>Unpublish</button> : <button className=" p-2 bg-green-400 rounded-md" onClick={() => HandlePublish(true, post._id)}>Publish</button>}
                     <button className=" p-2 bg-red-500 rounded-md text-xl font-semibold" onClick={() => HandleDeletePost(post._id)}>Delete Post</button>
                 </div>
 
             ))}
+            {isCreatingPost && <NewPostForm setIsCreatingPost={setIsCreatingPost} setPosts={setPosts} posts={posts} />
+            }
         </div>
     )
 }
