@@ -40,3 +40,12 @@ export interface NewPostProps {
 export interface LogInProps {
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface PostProps {
+  index: number;
+  post: Post;
+  comments: Comment[];
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
+  posts: Post[];
+  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+}
