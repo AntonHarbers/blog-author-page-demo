@@ -11,6 +11,7 @@ function App() {
 
   useEffect(() => {
     const JWT = localStorage.getItem('JWT');
+
     const CheckSession = async () => {
       const response = await fetch('http://localhost:3000/auth/session', {
         method: 'GET',
@@ -35,23 +36,30 @@ function App() {
     }
 
     CheckSession().catch((e) => console.log(e));
-  }, [])
-
-  const ToggleNewPostForm = () => {
-    setIsCreatingPost(!isCreatingPost)
-  }
+  }, [loggedIn])
 
   return (
-    <>
-      {!loggedIn ? <div>
-        <LogIn setLoggedIn={setLoggedIn} />
-      </div> : <div className='flex flex-col bg-slate-200 h-[100vh] w-full justify-center items-center'>
-        <LogOut setLoggedIn={setLoggedIn} />
-        <button className='absolute top-3 left-3 bg-green-300 p-3 rounded-sm hover:bg-green-500 active:bg-green-300' onClick={ToggleNewPostForm}>Create Post</button>
-        <Posts isCreatingPost={isCreatingPost} setIsCreatingPost={setIsCreatingPost} />
-        <div className='w-full text-center absolute bottom-0'>{sessionTimer} until session expires</div>
-      </div>}
-    </>
+    <div className=' overflow-hidden '>
+      {!loggedIn
+        ?
+        <div>
+          <LogIn setLoggedIn={setLoggedIn} />
+        </div>
+        :
+        <div className='flex flex-col  min-h-[100vh] w-[100vw] p-10'>
+          <div className=' text-3xl black w-full text-center mb-10'>Author Blog Home</div>
+          <LogOut setLoggedIn={setLoggedIn} />
+          <button
+            className='fixed top-3 w-[250px] left-3 text-xl bg-green-300 p-3 rounded-md hover:bg-green-500 active:bg-green-300 transition-all'
+            onClick={() => setIsCreatingPost(!isCreatingPost)}>
+            Create New Post
+          </button>
+          <Posts isCreatingPost={isCreatingPost} setIsCreatingPost={setIsCreatingPost} />
+          <div className=' fixed bottom-3 left-3'>
+            {sessionTimer} until session expires
+          </div>
+        </div>}
+    </div>
   )
 }
 

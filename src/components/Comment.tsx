@@ -9,9 +9,6 @@ export default function Comment({ comment, setComments }: CommentProps) {
     const HandleDeleteComment = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
 
-        console.log(comment._id)
-
-
         const response = await fetch(`http://localhost:3000/comments/${comment._id}`, {
             method: "DELETE",
             mode: 'cors',
@@ -31,7 +28,6 @@ export default function Comment({ comment, setComments }: CommentProps) {
         e.preventDefault()
 
         if (isEditing) {
-            // send update request
             const response = await fetch(`http://localhost:3000/comments/${comment._id}`, {
                 method: 'PUT',
                 mode: 'cors',
@@ -48,7 +44,6 @@ export default function Comment({ comment, setComments }: CommentProps) {
 
             if (response.ok) {
                 const updatedComment = await response.json();
-                console.log(updatedComment)
                 setComments(currentComments => {
                     const index = currentComments.findIndex(c => c._id === comment._id);
 
@@ -68,13 +63,26 @@ export default function Comment({ comment, setComments }: CommentProps) {
     }
 
     return (
-        <div>
-            {!isEditing ? <div>{comment.content}</div> : <input type='textarea' value={commentText} onChange={e => setCommentText(e.target.value)}></input>}
-
-            <div>By: {comment.author.username}</div>
-            <div>{new Date(comment.created_at).toLocaleString()}</div>
-            <button onClick={HandleEditBtnClick}>{isEditing ? "Update" : "Edit"}</button>
-            <button onClick={HandleDeleteComment}>Delete</button>
+        <div className=' bg-white pt-5 pl-5 pr-5 w-[250px] flex flex-col items-center'>
+            {!isEditing
+                ?
+                <div className=' text-xl p-2 '>{comment.content}</div>
+                :
+                <input
+                    type='textarea'
+                    className=' text-xl bg-slate-100 hover:bg-slate-200 focus:bg-slate-200 outline-none p-2 w-[90%]'
+                    value={commentText}
+                    onChange={e => setCommentText(e.target.value)}
+                />
+            }
+            <div className=' text-sm'>By: {comment.author.username}</div>
+            <div className=' text-sm'>{new Date(comment.created_at).toLocaleString()}</div>
+            <button className=' bg-green-300 transition-all active:scale-90 hover:bg-green-400 p-2 mt-2 w-[250px]' onClick={HandleEditBtnClick}>
+                {isEditing ? "Update" : "Edit"}
+            </button>
+            <button className=' bg-red-300 transition-all active:scale-90 hover:bg-red-400 p-2 w-[250px]' onClick={HandleDeleteComment}>
+                Delete
+            </button>
         </div>
     )
 }

@@ -8,6 +8,7 @@ export default function Post({ index, post, comments, setComments, posts, setPos
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [titleText, setTitleText] = useState<string>(post.title);
     const [contentText, setContentText] = useState<string>(post.content);
+    const [showComments, setShowComments] = useState<boolean>(false);
 
     const HandlePublish = (SetPublish: boolean, id: string) => {
         const JWT = localStorage.getItem('JWT')
@@ -76,7 +77,6 @@ export default function Post({ index, post, comments, setComments, posts, setPos
                 })
             })
 
-            // update the posts array accordingly
 
             if (response.ok) {
                 const updatedPost = await response.json();
@@ -100,19 +100,40 @@ export default function Post({ index, post, comments, setComments, posts, setPos
     }
 
     return (
-        <div key={index} className=" bg-blue-200 p-3 flex flex-col gap-2 items-center mt-2 w-[80%] ml-auto mr-auto">
-            {isEditing ? <input type="text" value={titleText} onChange={e => setTitleText(e.target.value)}></input> : <div className=" font-semibold text-xl">Title: {post.title}</div>}
-            {isEditing ? <input type="textarea" className=" h-52 w-[100%]" value={contentText} onChange={e => setContentText(e.target.value)} /> : <div className=" text-lg">Post: {post.content}</div>
+        <div key={index}
+            className={
+                ` border border-emerald-500 p-3 flex flex-col gap-2 items-center mt-2 w-[80%] ml-auto mr-auto ${post.is_published ? "bg-blue-100" : "bg-red-100"}`
             }
-            <button onClick={HandleEditBtnClick}>{isEditing ? "Update" : "Edit"}</button>
-            <div>Comments:</div>
-            {comments.slice().reverse().map((comment) => {
-                if (comment.post._id == post._id) {
-                    return <Comment key={comment._id} comment={comment} setComments={setComments} />
-                }
-            })}
-            {post.is_published ? <button className=" p-2 bg-red-300 rounded-md" onClick={() => HandlePublish(false, post._id)}>Unpublish</button> : <button className=" p-2 bg-green-400 rounded-md" onClick={() => HandlePublish(true, post._id)}>Publish</button>}
-            <button className=" p-2 bg-red-500 rounded-md text-xl font-semibold" onClick={() => HandleDeletePost(post._id)}>Delete Post</button>
+        >
+            {isEditing ? <input type="text" value={titleText} onChange={e => setTitleText(e.target.value)} className="font-semibold text-3xl text-center w-[250px]"></input> : <div className=" font-semibold text-3xl">{post.title}</div>}
+            {isEditing
+                ?
+                <textarea
+                    className="p-2 text-lg"
+                    name="content"
+                    id="postContent"
+                    cols={50}
+                    rows={10}
+                    value={contentText}
+                    onChange={e => setContentText(e.target.value)}
+                />
+                :
+                <div className=" text-lg">{post.content}
+                </div>
+            }
+            <button onClick={HandleEditBtnClick} className="w-[250px] bg-green-400 px-5 py-2 rounded-md hover:bg-green-500 active:scale-75 transition-all">{isEditing ? "Update Post" : "Edit Post"}</button>
+            {post.is_published ? <button className=" w-[250px] p-2 bg-red-300 rounded-md hover:bg-red-400 active:scale-95 transition-all" onClick={() => HandlePublish(false, post._id)}>Unpublish</button> : <button className=" p-2 w-[250px] bg-green-400 rounded-md hover:bg-green-600 transition-all active:scale-95 " onClick={() => HandlePublish(true, post._id)}>Publish</button>}
+
+            <div className=' text-2xl cursor-pointer' onClick={() => setShowComments(!showComments)}>Comments</div>
+            {showComments &&
+                comments.slice().reverse().map((comment) => {
+                    if (comment.post._id == post._id) {
+                        return <Comment key={comment._id} comment={comment} setComments={setComments} />
+                    }
+                })
+            }
+
+            <button className=" p-2 bg-red-500 hover:bg-red-600 transition-all active:scale-95 w-[250px] rounded-md text-xl font-semibold" onClick={() => HandleDeletePost(post._id)}>Delete Post</button>
         </div>
     )
 }
