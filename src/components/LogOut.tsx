@@ -1,6 +1,4 @@
-interface LogInProps {
-    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { LogInProps } from "../types";
 
 export default function LogOut({ setLoggedIn }: LogInProps) {
 

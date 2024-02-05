@@ -1,19 +1,5 @@
 import { useState } from "react";
-
-interface Post {
-    title: string,
-    content: string,
-    author: string,
-    created_at: number,
-    is_published: boolean,
-    _id: string,
-}
-
-interface NewPostProps {
-    setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
-    setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
-    posts: Post[];
-}
+import { NewPostProps } from '../types'
 
 export default function NewPostForm({ setIsCreatingPost, setPosts, posts }: NewPostProps) {
 

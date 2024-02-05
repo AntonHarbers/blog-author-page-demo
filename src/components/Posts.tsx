@@ -1,23 +1,12 @@
 import { useEffect, useState } from "react"
 import NewPostForm from './NewPostForm';
+import Comment from "./Comment";
+import { Post, Comment as CommentProps, PostsProps } from '../types'
 
-interface Post {
-    title: string,
-    content: string,
-    author: string,
-    created_at: number,
-    is_published: boolean,
-    _id: string,
-}
-
-interface NewPostProps {
-    isCreatingPost: boolean;
-    setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-
-export default function Posts({ isCreatingPost, setIsCreatingPost }: NewPostProps) {
+export default function Posts({ isCreatingPost, setIsCreatingPost }: PostsProps) {
     const [posts, setPosts] = useState<Post[]>([])
+    const [comments, setComments] = useState<CommentProps[]>([])
+
     useEffect(() => {
         const FetchPosts = async () => {
             const JWT = localStorage.getItem('JWT');
@@ -31,7 +20,20 @@ export default function Posts({ isCreatingPost, setIsCreatingPost }: NewPostProp
             console.log(data)
         }
 
+        const FetchComments = async () => {
+            const JWT = localStorage.getItem('JWT');
+            const response = await fetch('http://localhost:3000/comments', {
+                headers: {
+                    'Authorization': `Bearer ${JWT}`
+                }
+            })
+            const data = await response.json();
+            setComments(data)
+            console.log(data)
+        }
+
         FetchPosts().catch((e) => console.log(e))
+        FetchComments().catch(e => console.log(e))
     }, [])
 
     const HandlePublish = (SetPublish: boolean, id: string) => {
@@ -80,13 +82,18 @@ export default function Posts({ isCreatingPost, setIsCreatingPost }: NewPostProp
 
     }
 
-
     return (
         <div>
             {posts.map((post, index) => (
                 <div key={index} className=" bg-blue-200 p-3 flex flex-col gap-2 items-center mt-2 w-[80%] ml-auto mr-auto">
                     <div className=" font-semibold text-xl">Title: {post.title}</div>
                     <div className=" text-lg">Post: {post.content}</div>
+                    <div>Comments:</div>
+                    {comments.slice().reverse().map((comment) => {
+                        if (comment.post._id == post._id) {
+                            return <Comment key={comment._id} comment={comment} setComments={setComments} />
+                        }
+                    })}
                     {post.is_published ? <button className=" p-2 bg-red-300 rounded-md" onClick={() => HandlePublish(false, post._id)}>Unpublish</button> : <button className=" p-2 bg-green-400 rounded-md" onClick={() => HandlePublish(true, post._id)}>Publish</button>}
                     <button className=" p-2 bg-red-500 rounded-md text-xl font-semibold" onClick={() => HandleDeletePost(post._id)}>Delete Post</button>
                 </div>

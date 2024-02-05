@@ -1,8 +1,6 @@
 import { useState } from "react"
+import { LogInProps } from "../types";
 
-interface LogInProps {
-    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export default function LogIn({ setLoggedIn }: LogInProps) {
 
