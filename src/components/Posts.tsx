@@ -10,8 +10,8 @@ export default function Posts({ isCreatingPost, setIsCreatingPost }: PostsProps)
 
     useEffect(() => {
         const FetchData = async (route: string, isPosts: boolean) => {
-            const JWT = localStorage.getItem('JWT');
-            const response = await fetch(`http://localhost:3000/${route}`, {
+            const JWT = localStorage.getItem(import.meta.env.VITE_JWT);
+            const response = await fetch(`${import.meta.env.VITE_API_PATH}${route}`, {
                 headers: {
                     'Authorization': `Bearer ${JWT}`
                 }

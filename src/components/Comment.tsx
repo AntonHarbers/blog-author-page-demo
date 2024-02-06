@@ -9,11 +9,11 @@ export default function Comment({ comment, setComments }: CommentProps) {
     const HandleDeleteComment = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:3000/comments/${comment._id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_PATH}comments/${comment._id}`, {
             method: "DELETE",
             mode: 'cors',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('JWT')}`
+                'Authorization': `Bearer ${localStorage.getItem(import.meta.env.VITE_JWT)}`
             }
         })
 
@@ -28,12 +28,12 @@ export default function Comment({ comment, setComments }: CommentProps) {
         e.preventDefault()
 
         if (isEditing) {
-            const response = await fetch(`http://localhost:3000/comments/${comment._id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_PATH}comments/${comment._id}`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('JWT')}`
+                    'Authorization': `Bearer ${localStorage.getItem(import.meta.env.VITE_JWT)}`
                 },
                 body: JSON.stringify({
                     'content': commentText,

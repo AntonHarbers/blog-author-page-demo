@@ -3,7 +3,7 @@ import { LogInProps } from "../types";
 export default function LogOut({ setLoggedIn }: LogInProps) {
 
     const HandleLogOut = () => {
-        localStorage.setItem('JWT', '');
+        localStorage.setItem(import.meta.env.VITE_JWT, '');
         setLoggedIn(false)
     }
 

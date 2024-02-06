@@ -11,10 +11,10 @@ export default function Post({ index, post, comments, setComments, posts, setPos
     const [showComments, setShowComments] = useState<boolean>(false);
 
     const HandlePublish = (SetPublish: boolean, id: string) => {
-        const JWT = localStorage.getItem('JWT')
+        const JWT = localStorage.getItem(import.meta.env.VITE_JWT)
 
         const UpdatePost = async () => {
-            const response = await fetch(`http://localhost:3000/posts/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_PATH}posts/${id}`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
@@ -40,20 +40,20 @@ export default function Post({ index, post, comments, setComments, posts, setPos
     }
 
     const HandleDeletePost = async (id: string) => {
-        const JWT = localStorage.getItem('JWT')
+        const JWT = localStorage.getItem(import.meta.env.VITE_JWT)
         // send delete request to the id
-        const response = await fetch(`http://localhost:3000/posts/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_PATH}posts/${id}`, {
             method: 'DELETE',
             mode: 'cors',
             headers: { 'Authorization': `Bearer ${JWT}` }
         })
 
-        const data = await response.json();
-        console.log(data)
-
-        const newPosts = posts.filter(post => post._id !== id);
-        setPosts(newPosts)
-
+        if (response.ok) {
+            const newPosts = posts.filter(post => post._id !== id);
+            setPosts(newPosts)
+        } else {
+            console.error('Something went wrong when deleting the post. Try again later')
+        }
     }
 
     const HandleEditBtnClick = async (e: React.MouseEvent<HTMLElement>) => {
@@ -61,14 +61,11 @@ export default function Post({ index, post, comments, setComments, posts, setPos
 
         if (isEditing) {
             // make the api call
-            console.log(titleText)
-            console.log(contentText)
-
-            const response = await fetch(`http://localhost:3000/posts/${post._id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_PATH}posts/${post._id}`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('JWT')}`,
+                    'Authorization': `Bearer ${localStorage.getItem(import.meta.env.VITE_JWT)}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

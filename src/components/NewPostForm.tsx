@@ -20,10 +20,10 @@ export default function NewPostForm({ setIsCreatingPost, setPosts, posts }: NewP
             return
         }
 
-        const JWT = localStorage.getItem('JWT')
+        const JWT = localStorage.getItem(import.meta.env.VITE_JWT)
 
         const PostPost = async () => {
-            const response = await fetch('http://localhost:3000/posts', {
+            const response = await fetch(`${import.meta.env.VITE_API_PATH}posts`, {
                 method: "POST",
                 mode: 'cors',
                 headers: {

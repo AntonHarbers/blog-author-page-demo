@@ -10,10 +10,10 @@ function App() {
   const [isCreatingPost, setIsCreatingPost] = useState(false);
 
   useEffect(() => {
-    const JWT = localStorage.getItem('JWT');
+    const JWT = localStorage.getItem(import.meta.env.VITE_JWT);
 
     const CheckSession = async () => {
-      const response = await fetch('http://localhost:3000/auth/session', {
+      const response = await fetch(`${import.meta.env.VITE_API_PATH}auth/session`, {
         method: 'GET',
         mode: 'cors',
         headers: { "Authorization": `Bearer ${JWT}` }

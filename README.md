@@ -10,7 +10,7 @@ Welcome to the Blog Author Page Demo, a comprehensive front-end solution designe
 
 [Rest-API Repo](https://github.com/AntonHarbers/Blog-Api-Demo)
 
-[Rest-API Enpoint]()
+[Rest-API Enpoint](https://cerulean-diagnostic-watercress.glitch.me/)
 
 ## Project Features
 

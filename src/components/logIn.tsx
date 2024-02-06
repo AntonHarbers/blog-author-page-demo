@@ -9,6 +9,7 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
     const [errors, setErrors] = useState([''])
 
     async function HandleLogIn(e: React.MouseEvent<HTMLElement>) {
+
         e.preventDefault();
         // Validation
         if (username.length < 1) {
@@ -26,7 +27,7 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
         }
 
         // fetch call
-        const response = await fetch('http://localhost:3000/auth/log-in', {
+        const response = await fetch(`${import.meta.env.VITE_API_PATH}auth/log-in`, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -39,7 +40,7 @@ export default function LogIn({ setLoggedIn }: LogInProps) {
 
         if (data.token && data.admin) {
             setLoggedIn(true)
-            localStorage.setItem('JWT', data.token)
+            localStorage.setItem(import.meta.env.VITE_JWT, data.token)
         } else {
             if (data.token) { setErrors(['You are not an admin']) } else { setErrors([data]) }
         }
