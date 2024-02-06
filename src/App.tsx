@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import LogIn from './components/LogIn.tsx'
+import LogIn from './components/logIn.tsx'
 import Posts from './components/Posts.tsx'
 import LogOut from './components/LogOut.tsx';
 
