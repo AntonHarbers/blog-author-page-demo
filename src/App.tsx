@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import LogIn from './components/LogIn'
-import Posts from './components/Posts'
-import LogOut from './components/LogOut';
+import LogIn from './components/LogIn.tsx'
+import Posts from './components/Posts.tsx'
+import LogOut from './components/LogOut.tsx';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
