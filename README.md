@@ -2,7 +2,7 @@
 
 Welcome to the Blog Author Page Demo, a comprehensive front-end solution designed to interface seamlessly with the Blog API for a complete blogging platform. This project, built using TypeScript, Vite, and React, showcases my approach to creating dynamic web applications that are both efficient and user-friendly.
 
-[Live Link]()
+[Live Link](https://blog-author-page-demo-osga3btfh-tmonee23.vercel.app/)
 
 [Frontend App Repo](https://github.com/AntonHarbers/blog-frontend-demo)
 
